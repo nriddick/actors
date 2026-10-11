@@ -1,0 +1,19 @@
+{
+  "description": "Actors/Message passing benchmark on Ant Farm public actors",
+  "authors": [
+    "Nathan Riddick"
+  ],
+  "license": "MIT",
+  "name": "actors-antfarm",
+  "targetName": "actors",
+  "dependencies": {
+    "antfarm": {
+      "repository": "git+https://github.com/nriddick/antfarm.git",
+      "version": "5b381ae75d923253871ce6887f93ca777c5f2eaa"
+    },
+    "antfarm:threadpool": {
+      "repository": "git+https://github.com/nriddick/antfarm.git",
+      "version": "5b381ae75d923253871ce6887f93ca777c5f2eaa"
+    }
+  }
+}
