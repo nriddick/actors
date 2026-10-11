@@ -74,18 +74,21 @@ void dotActor(
     );
     bool running = true;
 
+    // Wait for InitMsg alone. A ColorMsg from another actor can arrive first;
+    // receive leaves it queued instead of handling it with threshold 0 and no
+    // coordinator.
+    receive((InitMsg msg) {
+        color = msg.initialColor;
+        threshold = msg.threshold;
+        coordinator = msg.coordinator;
+        actors = msg.actors;
+        if (color != 255)
+            send(coordinator, ColoredMsg(thisTid, color));
+    });
+
     while (running)
     {
         receiveTimeout(dur!"msecs"(5),
-            (InitMsg msg) {
-            color = msg.initialColor;
-            threshold = msg.threshold;
-            coordinator = msg.coordinator;
-            actors = msg.actors;
-            Thread.sleep(dur!"msecs"(5));
-            if (color != 255)
-                send(coordinator, ColoredMsg(thisTid, color));
-        },
             (ColorMsg msg) {
             if (color == 255)
             {
@@ -123,8 +126,6 @@ void dotActor(
             currentTarget = cast(Tid) actors[targetIndex];
             send(currentTarget, ColorMsg(thisTid, color));
         }
-
-        Thread.sleep(dur!"msecs"(5));
     }
 }
 
